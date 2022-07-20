@@ -8,6 +8,7 @@ import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.plcoding.spotifycloneyt.exoplayer.callbacks.AudioPlayerNotificationListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,23 +16,26 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import javax.inject.Inject
 
-
-private const val SERVICE_TAG = "AudioService"
+private const val SERVICE_TAG = "MusicService"
 
 @AndroidEntryPoint
-class AudioService : MediaBrowserServiceCompat(){
-
+class AudioService : MediaBrowserServiceCompat() {
 
     @Inject
     lateinit var dataSourceFactory: DefaultDataSourceFactory
+
     @Inject
     lateinit var exoPlayer: SimpleExoPlayer
+
+    private lateinit var audioNotificationManager: AudioNotificationManager
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var mediaSessionConnector: MediaSessionConnector
+
+    var isForegroundService = false
 
     override fun onCreate() {
         super.onCreate()
@@ -46,6 +50,14 @@ class AudioService : MediaBrowserServiceCompat(){
 
         sessionToken = mediaSession.sessionToken
 
+        audioNotificationManager = AudioNotificationManager(
+            this,
+            mediaSession.sessionToken,
+            AudioPlayerNotificationListener(this)
+        ) {
+
+        }
+
         mediaSessionConnector = MediaSessionConnector(mediaSession)
         mediaSessionConnector.setPlayer(exoPlayer)
     }
@@ -55,19 +67,18 @@ class AudioService : MediaBrowserServiceCompat(){
         serviceScope.cancel()
     }
 
-
-    override fun onLoadChildren(
-        parentId: String,
-        result: Result<MutableList<MediaBrowserCompat.MediaItem>>
-    ) {
-        TODO("Not yet implemented")
-    }
-
     override fun onGetRoot(
         clientPackageName: String,
         clientUid: Int,
         rootHints: Bundle?
     ): BrowserRoot? {
-        TODO("Not yet implemented")
+
+    }
+
+    override fun onLoadChildren(
+        parentId: String,
+        result: Result<MutableList<MediaBrowserCompat.MediaItem>>
+    ) {
+
     }
 }
