@@ -25,7 +25,7 @@ class AudioService : MediaBrowserServiceCompat() {
     lateinit var exoPlayer: SimpleExoPlayer
 
     @Inject
-    lateinit var firebaseMusicSource: FirebaseAudioSource
+    lateinit var firebaseAudioSource: FirebaseAudioSource
 
     private lateinit var musicNotificationManager: AudioNotificationManager
 
@@ -42,7 +42,7 @@ class AudioService : MediaBrowserServiceCompat() {
     override fun onCreate() {
         super.onCreate()
         serviceScope.launch {
-            FirebaseAudioSource.fetchMedisData()
+            firebaseAudioSource.fetchMediaData()
         }
         val activityIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let {
             PendingIntent.getActivity(this, 0, it, 0)
@@ -64,10 +64,10 @@ class AudioService : MediaBrowserServiceCompat() {
 
         }
 
-        val musicPlaybackPreparer = MusicPlaybackPreparer(firebaseMusicSource) {
+        val musicPlaybackPreparer = MusicPlaybackPreparer(firebaseAudioSource) {
             curPlayingSong = it
             preparePlayer(
-                firebaseMusicSource.audios,
+                firebaseAudioSource.audios,
                 it,
                 true
             )
@@ -87,7 +87,7 @@ class AudioService : MediaBrowserServiceCompat() {
         playNow: Boolean
     ) {
         val curSongIndex = if(curPlayingSong == null) 0 else songs.indexOf(itemToPlay)
-        exoPlayer.prepare(firebaseMusicSource.asMediaSource(dataSourceFactory))
+        exoPlayer.prepare(firebaseAudioSource.asMediaSource(dataSourceFactory))
         exoPlayer.seekTo(curSongIndex, 0L)
         exoPlayer.playWhenReady = playNow
     }
