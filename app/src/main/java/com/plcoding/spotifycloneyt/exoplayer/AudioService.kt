@@ -2,11 +2,14 @@ package com.plcoding.spotifycloneyt.exoplayer
 import android.app.PendingIntent
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.MediaBrowserServiceCompat
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.plcoding.spotifycloneyt.exoplayer.callbacks.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -79,6 +82,11 @@ class AudioService : MediaBrowserServiceCompat() {
 
         exoPlayer.addListener(AudioPlayerEventListener(this))
         musicNotificationManager.showNotification(exoPlayer)
+    }
+    private inner class MusicQueueNavigator : TimelineQueueNavigator(mediaSession) {
+        override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat {
+            return firebaseAudioSource.audios[windowIndex].description
+        }
     }
 
     private fun preparePlayer(
