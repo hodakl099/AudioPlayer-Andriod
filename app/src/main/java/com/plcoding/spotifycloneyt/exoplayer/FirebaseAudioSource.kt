@@ -59,7 +59,7 @@ class FirebaseAudioSource @Inject constructor(private val audioDatabase: AudioDa
             .setIconUri(audio.description.iconUri)
             .build()
         MediaBrowserCompat.MediaItem(desc, FLAG_PLAYABLE)
-    }
+    }.toMutableList()
 
 
     private val onReadyListeners = mutableListOf<(Boolean) -> Unit>()
