@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.plcoding.spotifycloneyt.data.entities.other.Constants.MEDIA_ROOT_ID
+import com.plcoding.spotifycloneyt.data.entities.other.Constants.NETWORK_ERROR
 import com.plcoding.spotifycloneyt.exoplayer.callbacks.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -152,6 +153,7 @@ class AudioService : MediaBrowserServiceCompat() {
 
                         }
                     }else   {
+                        mediaSession.sendSessionEvent(NETWORK_ERROR, null)
                         result.sendResult(null)
                     }
 
