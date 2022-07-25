@@ -27,7 +27,7 @@ class FirebaseAudioSource @Inject constructor(private val audioDatabase: AudioDa
         audios = allAudios.map { audio ->
             MediaMetadataCompat.Builder()
                 .putString(METADATA_KEY_ARTIST, audio.subtitle)
-                .putString(METADATA_KEY_MEDIA_ID, audio.MediaId)
+                .putString(METADATA_KEY_MEDIA_ID, audio.mediaId)
                 .putString(METADATA_KEY_TITLE, audio.title)
                 .putString(METADATA_KEY_DISPLAY_TITLE, audio.title)
                 .putString(METADATA_KEY_DISPLAY_ICON_URI, audio.imageUrl)
