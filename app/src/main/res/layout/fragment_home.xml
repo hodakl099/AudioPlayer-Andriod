@@ -7,7 +7,7 @@
     tools:context=".ui.MainActivity">
 
     <ProgressBar
-        android:id="@+id/allSongsProgressBar"
+        android:id="@+id/allAudiosProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAllSongs"
+        android:id="@+id/rvAllAudios"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
