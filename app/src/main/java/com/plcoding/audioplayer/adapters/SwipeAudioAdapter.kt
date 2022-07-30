@@ -9,14 +9,14 @@ class SwipeAudioAdapter : BaseAudioAdapter(R.layout.list_item) {
     override val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onBindViewHolder(holder: BaseAudioAdapter.SongViewHolder, position: Int) {
-        val song = audios[position]
+        val audio = audios[position]
         holder.itemView.apply {
-            val text = "${song.title} - ${song.subtitle}"
+            val text = "${audio.title} - ${audio.subtitle}"
             tvPrimary.text = text
 
             setOnClickListener {
                 onItemClickListener?.let { click ->
-                    click(song)
+                    click(audio)
                 }
             }
         }
