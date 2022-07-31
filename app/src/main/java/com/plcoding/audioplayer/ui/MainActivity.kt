@@ -2,12 +2,14 @@ package com.plcoding.audioplayer.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.media.session.PlaybackStateCompat
 import androidx.activity.viewModels
 import com.bumptech.glide.RequestManager
 import com.plcoding.audioplayer.R
 import com.plcoding.audioplayer.adapters.SwipeAudioAdapter
 import com.plcoding.audioplayer.data.entities.Audio
 import com.plcoding.audioplayer.data.entities.other.Status
+import com.plcoding.audioplayer.exoplayer.isPlaying
 import com.plcoding.audioplayer.exoplayer.toAudio
 import com.plcoding.audioplayer.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var glide: RequestManager
 
     private var curPlayingSong: Audio? = null
+
+    private var playBackState: PlaybackStateCompat? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +72,11 @@ class MainActivity : AppCompatActivity() {
             glide.load(curPlayingSong?.imageUrl).into(ivCurSongImage)
             switchViewPagerToCurrentSong(curPlayingSong ?: return@observe)
         }
+        mainViewModel.playbackState.observe(this) {
+            if(playBackState?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
+        }
     }
+
 }
 
 
