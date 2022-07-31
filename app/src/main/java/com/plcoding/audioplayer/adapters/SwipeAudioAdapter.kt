@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import com.plcoding.audioplayer.R
 import kotlinx.android.synthetic.main.swipe_item.view.*
 
-class SwipeAudioAdapter : BaseAudioAdapter(R.layout.list_item) {
+class SwipeAudioAdapter : BaseAudioAdapter(R.layout.swipe_item) {
 
     override val differ = AsyncListDiffer(this, diffCallback)
 

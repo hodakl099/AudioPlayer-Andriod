@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.plcoding.audioplayer.R
+import com.plcoding.audioplayer.adapters.SwipeAudioAdapter
 import com.plcoding.audioplayer.exoplayer.AudioServiceConnection
 import dagger.Module
 import dagger.Provides
@@ -23,6 +24,10 @@ object AppModule {
     fun provideAudioServiceConnection(
         @ApplicationContext context: Context
     ) = AudioServiceConnection(context)
+
+    @Singleton
+    @Provides
+    fun provideSwipeAudioAdapter() = SwipeAudioAdapter()
 
     @Singleton
     @Provides
