@@ -1,6 +1,9 @@
 package com.plcoding.audioplayer.exoplayer
 
+import android.os.SystemClock.elapsedRealtime
 import android.support.v4.media.session.PlaybackStateCompat
+import android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING
+import com.google.android.exoplayer2.util.SystemClock
 
 inline val PlaybackStateCompat.isPrepared
     get() = state == PlaybackStateCompat.STATE_BUFFERING ||
@@ -15,3 +18,9 @@ inline val PlaybackStateCompat.isPlayEnabled
     get() = actions and PlaybackStateCompat.ACTION_PLAY != 0L ||
             (actions and PlaybackStateCompat.ACTION_PLAY_PAUSE != 0L &&
                     state == PlaybackStateCompat.STATE_PAUSED)
+
+inline val PlaybackStateCompat.currentPlaybackPosition: Long
+    get() = if(state == STATE_PLAYING) {
+        val timeDelta = SystemClock.elapsedRealtime() - lastPositionUpdateTime
+        (position + (timeDelta * playbackSpeed)).toLong()
+    } else position

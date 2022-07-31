@@ -48,10 +48,10 @@ class AudioService : MediaBrowserServiceCompat() {
 
     private var isPlayerInitialized = false
 
-    private var curPlayingSong: MediaMetadataCompat? = null
+    private var curPlayingAudio: MediaMetadataCompat? = null
 
     companion object {
-        private var curAudioDuration = 0L
+         var curAudioDuration = 0L
         private set
     }
 
@@ -82,7 +82,7 @@ class AudioService : MediaBrowserServiceCompat() {
         }
 
         val musicPlaybackPreparer = MusicPlaybackPreparer(firebaseAudioSource) {
-            curPlayingSong = it
+            curPlayingAudio = it
             preparePlayer(
                 firebaseAudioSource.audios,
                 it,
@@ -110,7 +110,7 @@ class AudioService : MediaBrowserServiceCompat() {
         itemToPlay: MediaMetadataCompat?,
         playNow: Boolean
     ) {
-        val curSongIndex = if(curPlayingSong == null) 0 else songs.indexOf(itemToPlay)
+        val curSongIndex = if(curPlayingAudio == null) 0 else songs.indexOf(itemToPlay)
         exoPlayer.prepare(firebaseAudioSource.asMediaSource(dataSourceFactory))
         exoPlayer.seekTo(curSongIndex, 0L)
         exoPlayer.playWhenReady = playNow
