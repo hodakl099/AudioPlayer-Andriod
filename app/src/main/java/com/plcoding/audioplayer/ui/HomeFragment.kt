@@ -10,11 +10,9 @@ import com.plcoding.audioplayer.R
 import com.plcoding.audioplayer.adapters.AudioAdapter
 import com.plcoding.audioplayer.data.entities.other.Status
 import com.plcoding.audioplayer.ui.viewmodels.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     lateinit var mainViewModel: MainViewModel
@@ -25,12 +23,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        setupRecyclerView()
-        subscribeToObservers()
 
-        audioAdapter.setOnItemClickListener {
-            mainViewModel.playOrToggleSong(it)
-        }
     }
 
     private fun setupRecyclerView() = rvAllAudios.apply {
@@ -40,22 +33,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun subscribeToObservers() {
         mainViewModel.mediaItems.observe(viewLifecycleOwner) { result ->
-            when(result.status) {
-                Status.SUCCESS -> {
-                    allAudiosProgressBar.isVisible = false
-                    result.data?.let { audios ->
-                        audioAdapter.audios = audios
+                when(result.status) {
+                    Status.SUCCESS -> {
+                        allAudiosProgressBar.isVisible = false
+                        result.data?.let { audios ->
+                            audioAdapter.audios = audios
+                        }
                     }
+                    Status.ERROR -> Unit
+                    Status.LOADING -> allAudiosProgressBar.isVisible = true
                 }
-                Status.ERROR -> Unit
-                Status.LOADING -> allAudiosProgressBar.isVisible = true
-            }
+
         }
+
     }
+
 }
-
-
-
-
-
-
