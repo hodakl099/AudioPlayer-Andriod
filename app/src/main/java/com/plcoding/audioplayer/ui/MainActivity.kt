@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
@@ -65,6 +66,19 @@ class MainActivity : AppCompatActivity() {
             curPlayingSong = song
         }
     }
+    private fun hideBottomBar(){
+        ivCurSongImage.isVisible = false
+        vpSong.isVisible = false
+        ivPlayPause.isVisible = false
+
+    }
+    private fun showBottomBar(){
+        ivCurSongImage.isVisible = true
+        vpSong.isVisible = true
+        ivPlayPause.isVisible = true
+
+    }
+
 
     private fun subscribeToObservers() {
         mainViewModel.mediaItems.observe(this) {
@@ -98,6 +112,7 @@ class MainActivity : AppCompatActivity() {
                 if (playbackState?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
             )
         }
+
         mainViewModel.isConnected.observe(this) {
             it?.getContentIfNotHandled()?.let { result ->
                 when (result.status) {
