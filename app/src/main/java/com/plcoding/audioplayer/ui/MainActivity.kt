@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
@@ -56,6 +57,14 @@ class MainActivity : AppCompatActivity() {
             curPlayingSong?.let {
                 mainViewModel.playOrToggleSong(it, true)
             }
+        }
+        navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            when(destination) {
+                R.id.audioFragment -> hideBottomBar()
+                R.id.homeFragment -> showBottomBar()
+                else -> showBottomBar()
+            }
+
         }
     }
 
