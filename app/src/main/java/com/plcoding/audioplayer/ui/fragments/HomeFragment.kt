@@ -1,4 +1,4 @@
-package com.plcoding.audioplayer.ui
+package com.plcoding.audioplayer.ui.fragments
 
 import android.os.Bundle
 import android.view.View
